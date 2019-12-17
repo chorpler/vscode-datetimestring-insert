@@ -1,13 +1,20 @@
 import { commands, workspace, window, ExtensionContext } from 'vscode';
 
 import 'date-format-lite';
+import * as moment from 'moment';
+// import * as momenttimezone from 'moment-timezone';
 
 const INPUT_PROMPT = 'Date and Time format';
 const DEFAULT_FORMAT = 'YYYY-MM-DD hh:mm:ss';
 
 function getConfiguredFormat(format: string = 'format'): string {
-  const insertDateStringConfiguration = workspace.getConfiguration('insertDateString');
-  return insertDateStringConfiguration.get(format, DEFAULT_FORMAT);
+  const insertMomentStringConfiguration = workspace.getConfiguration('insertMomentString');
+  return insertMomentStringConfiguration.get(format, DEFAULT_FORMAT);
+}
+
+function getMomentFormattedString(userFormat = getConfiguredFormat()):string {
+  const now = moment();
+  return now.format(userFormat);
 }
 
 function getFormattedDateString(userFormat = getConfiguredFormat()): string {
@@ -29,33 +36,34 @@ function replaceEditorSelection(text: string) {
 
 export function activate(context: ExtensionContext): void {
   context.subscriptions.push(commands.registerCommand(
-    'insertDateString.insertDateTime',
+    'insertMomentString.insertDateTime',
     () => replaceEditorSelection(getFormattedDateString())
   ));
 
   context.subscriptions.push(commands.registerCommand(
-    'insertDateString.insertDate',
+    'insertMomentString.insertDate',
     () => replaceEditorSelection(getFormattedDateString(getConfiguredFormat('formatDate')))
   ));
 
   context.subscriptions.push(commands.registerCommand(
-    'insertDateString.insertTime',
+    'insertMomentString.insertTime',
     () => replaceEditorSelection(getFormattedDateString(getConfiguredFormat('formatTime')))
   ));
 
   context.subscriptions.push(commands.registerCommand(
-    'insertDateString.insertTimestamp',
+    'insertMomentString.insertTimestamp',
     () => replaceEditorSelection((new Date()).getTime().toString())
   ));
 
   context.subscriptions.push(commands.registerCommand(
-    'insertDateString.insertOwnFormatDateTime',
+    'insertMomentString.insertOwnFormatDateTime',
     () => {
       window.showInputBox({
         value: getConfiguredFormat(),
         prompt: INPUT_PROMPT,
       }).then((format) => {
-        replaceEditorSelection(getFormattedDateString(format));
+        // replaceEditorSelection(getFormattedDateString(format));
+        replaceEditorSelection(getMomentFormattedString(format));
       });
     }
   ));

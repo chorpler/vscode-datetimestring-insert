@@ -1,3 +1,18 @@
+# UPDATED 2019-12-17 by [chorpler](https://github.com/chorpler/vscode-datetimestring-insert)
+I'm changing the "formatted" part to use standard [Moment.js](https://momentjs.com) [formatting](https://momentjs.com/docs/#/displaying/) because why not.
+
+Changes:
+
+- Default format now uses whatever Moment.js uses for an empty string, which is ISO 8601, no fractional seconds
+  - It comes out looking like this: `2019-01-01T06:23:44-06:00`.
+  - In particular, notice there is now a numeric time zone on the end.
+- Changed settings namespace to `insertMomentString`
+
+
+---
+## *ORIGINAL README BEGINS UNDER THIS LINE*
+---
+
 # VSCode extension - Insert Date String
 
 [![Version][version-badge]][marketplace]

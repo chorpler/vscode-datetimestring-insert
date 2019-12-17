@@ -1,50 +1,85 @@
 {
-  "name": "vscode-insertdatestring",
-  "displayName": "Insert Date String",
-  "description": "Insert the current date and time according to configured format.",
+  "name": "vscode-datetimestring-insert",
+  "displayName": "Insert Moment String",
+  "description": "Insert the current date and time according to configured format, using Moment.js.",
   "version": "2.2.4",
-  "publisher": "jsynowiec",
-  "homepage": "https://github.com/jsynowiec/vscode-insertdatestring#readme",
+  "publisher": "onsite",
+  "homepage": "https://github.com/chorpler/vscode-datetimestring-insert#readme",
   "bugs": {
-    "url": "https://github.com/jsynowiec/vscode-insertdatestring/issues"
+    "url": "https://github.com/chorpler/vscode-datetimestring-insert/issues"
   },
   "license": "MIT",
   "author": {
-    "name": "Jakub Synowiec",
-    "email": "github@jakubsynowiec.info",
-    "url": "https://jakubsynowiec.info"
+    "name": "David Sargeant",
+    "email": "starmobiledevelopers@gmail.com",
+    "url": "https://www.starmobiledevelopers.com"
   },
-  "main": "./out/src/extension",
+  "contributors": [
+    {
+      "name": "David Sargeant",
+      "email": "starmobiledevelopers@gmail.com",
+      "url": "https://www.starmobiledevelopers.com"
+    },
+    {
+      "name": "Jakub Synowiec",
+      "email": "github@jakubsynowiec.info",
+      "url": "https://jakubsynowiec.info"
+    }
+  ],
+  "main": "./dist/extension",
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/jsynowiec/vscode-insertdatestring"
+    "url": "https://github.com/chorpler/vscode-datetimestring-insert"
   },
   "scripts": {
-    "vscode:prepublish": "tsc -p ./",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
+    "vscode:prepublish": "webpack --mode production",
+    "compile": "webpack --mode none",
+    "watch": "webpack --mode none --watch",
+    "test-compile": "tsc -p ./",
+    "webpack": "webpack --mode development",
+    "webpack-dev": "webpack --mode development --watch",
     "postinstall": "node ./node_modules/vscode/bin/install && tsc -p ./",
     "lint": "tslint \"src/**.js\""
   },
+  "scriptsComments": {
+    "original": {
+      "vscode:prepublish": "tsc -p ./",
+      "compile": "tsc -p ./",
+      "watch": "tsc -watch -p ./",
+      "postinstall": "node ./node_modules/vscode/bin/install && tsc -p ./",
+      "lint": "tslint \"src/**.js\""
+    }
+  },
+  "rootComments": {
+    "original": {
+      "main": "./out/src/extension"
+    }
+  },
   "dependencies": {
-    "date-format-lite": "^17.7.0"
+    "date-format-lite": "^17.7.0",
+    "moment": "^2.24.0",
+    "moment-timezone": "^0.5.27",
+    "tslib": "^1.10.0"
   },
   "devDependencies": {
-    "@types/node": "^10.14.6",
-    "tslint": "^5.16.0",
-    "typescript": "^3.4.5",
-    "vscode": "^1.1.34"
+    "@types/node": "^12.12.19",
+    "ts-loader": "^6.2.1",
+    "tslint": "^5.20.1",
+    "typescript": "^3.7.3",
+    "vscode": "^1.1.36",
+    "webpack": "^4.41.3",
+    "webpack-cli": "^3.3.10"
   },
   "engines": {
     "vscode": "^1.4.0"
   },
   "activationEvents": [
-    "onCommand:insertDateString.insertDateTime",
-    "onCommand:insertDateString.insertDate",
-    "onCommand:insertDateString.insertTime",
-    "onCommand:insertDateString.insertTimestamp",
-    "onCommand:insertDateString.insertOwnFormatDateTime"
+    "onCommand:insertMomentString.insertDateTime",
+    "onCommand:insertMomentString.insertDate",
+    "onCommand:insertMomentString.insertTime",
+    "onCommand:insertMomentString.insertTimestamp",
+    "onCommand:insertMomentString.insertOwnFormatDateTime"
   ],
   "categories": [
     "Other",
@@ -54,46 +89,47 @@
     "iso 8601",
     "datetime",
     "current date",
+    "moment",
     "timestamp",
     "template"
   ],
   "contributes": {
     "commands": [
       {
-        "command": "insertDateString.insertDateTime",
+        "command": "insertMomentString.insertDateTime",
         "title": "Insert DateTime"
       },
       {
-        "command": "insertDateString.insertDate",
+        "command": "insertMomentString.insertDate",
         "title": "Insert Date"
       },
       {
-        "command": "insertDateString.insertTime",
+        "command": "insertMomentString.insertTime",
         "title": "Insert Time"
       },
       {
-        "command": "insertDateString.insertTimestamp",
+        "command": "insertMomentString.insertTimestamp",
         "title": "Insert Timestamp"
       },
       {
-        "command": "insertDateString.insertOwnFormatDateTime",
+        "command": "insertMomentString.insertOwnFormatDateTime",
         "title": "Insert Formatted DateTime"
       }
     ],
     "configuration": {
       "title": "Insert Date String Configuration",
       "properties": {
-        "insertDateString.format": {
+        "insertMomentString.format": {
           "type": "string",
           "default": "YYYY-MM-DD hh:mm:ss",
           "description": "Date time format to be used."
         },
-        "insertDateString.formatDate": {
+        "insertMomentString.formatDate": {
           "type": "string",
           "default": "YYYY-MM-DD",
           "description": "Date format to be used."
         },
-        "insertDateString.formatTime": {
+        "insertMomentString.formatTime": {
           "type": "string",
           "default": "hh:mm:ss",
           "description": "Time format to be used."
@@ -102,13 +138,13 @@
     },
     "keybindings": [
       {
-        "command": "insertDateString.insertDateTime",
+        "command": "insertMomentString.insertDateTime",
         "key": "shift+ctrl+i",
         "mac": "shift+cmd+i",
         "when": "editorTextFocus"
       },
       {
-        "command": "insertDateString.insertOwnFormatDateTime",
+        "command": "insertMomentString.insertOwnFormatDateTime",
         "key": "shift+ctrl+alt+i",
         "mac": "shift+cmd+alt+i",
         "when": "editorTextFocus"

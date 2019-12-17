@@ -5,3 +5,5 @@
 .editorconfig
 tslint.json
 tsconfig.json
+node_modules/**/*
+webpack.config.js

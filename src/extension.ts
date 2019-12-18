@@ -1,13 +1,13 @@
 import { commands, workspace, window, ExtensionContext } from 'vscode';
 
-import 'date-format-lite';
+// import 'date-format-lite';
 import * as moment from 'moment';
 // import * as momenttimezone from 'moment-timezone';
 
 const INPUT_PROMPT = 'Date and Time format';
-const DEFAULT_FORMAT = 'YYYY-MM-DD hh:mm:ss';
+const DEFAULT_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 
-function getConfiguredFormat(format: string = 'format'): string {
+function getConfiguredFormat(format:string = 'format'): string {
   const insertMomentStringConfiguration = workspace.getConfiguration('insertMomentString');
   return insertMomentStringConfiguration.get(format, DEFAULT_FORMAT);
 }
@@ -17,9 +17,20 @@ function getMomentFormattedString(userFormat = getConfiguredFormat()):string {
   return now.format(userFormat);
 }
 
-function getFormattedDateString(userFormat = getConfiguredFormat()): string {
-  const now = new Date();
+function getFormattedDateString(userFormat = getConfiguredFormat()):string {
+  const now = moment();
   return now.format(userFormat);
+}
+
+function getFormattedTimeString(userFormat = getConfiguredFormat()):string {
+  const now = moment();
+  return now.format(userFormat);
+}
+
+function getNumericTimestamp():string {
+  const now = moment();
+  // return Number(now);
+  return now.format('x');
 }
 
 function replaceEditorSelection(text: string) {
@@ -51,8 +62,23 @@ export function activate(context: ExtensionContext): void {
   ));
 
   context.subscriptions.push(commands.registerCommand(
+    'insertMomentString.insertSortable',
+    () => replaceEditorSelection(getFormattedDateString(getConfiguredFormat('formatSort')))
+  ));
+
+  context.subscriptions.push(commands.registerCommand(
+    'insertMomentString.insertReadable',
+    () => replaceEditorSelection(getFormattedDateString(getConfiguredFormat('formatReadable')))
+  ));
+
+  context.subscriptions.push(commands.registerCommand(
     'insertMomentString.insertTimestamp',
-    () => replaceEditorSelection((new Date()).getTime().toString())
+    () => replaceEditorSelection(getFormattedTimeString(getConfiguredFormat()))
+  ));
+
+  context.subscriptions.push(commands.registerCommand(
+    'insertMomentString.insertTimestampNumeric',
+    () => replaceEditorSelection(getNumericTimestamp())
   ));
 
   context.subscriptions.push(commands.registerCommand(

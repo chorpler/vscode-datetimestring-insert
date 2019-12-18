@@ -2,7 +2,7 @@
   "name": "vscode-datetimestring-insert",
   "displayName": "Insert Moment String",
   "description": "Insert the current date and time according to configured format, using Moment.js.",
-  "version": "2.2.4",
+  "version": "1.0.2",
   "publisher": "onsite",
   "homepage": "https://github.com/chorpler/vscode-datetimestring-insert#readme",
   "bugs": {
@@ -76,10 +76,13 @@
     "vscode": "^1.4.0"
   },
   "activationEvents": [
+    "onCommand:insertMomentString.insertSortable",
+    "onCommand:insertMomentString.insertReadable",
     "onCommand:insertMomentString.insertDateTime",
     "onCommand:insertMomentString.insertDate",
     "onCommand:insertMomentString.insertTime",
     "onCommand:insertMomentString.insertTimestamp",
+    "onCommand:insertMomentString.insertTimestampNumeric",
     "onCommand:insertMomentString.insertOwnFormatDateTime"
   ],
   "categories": [
@@ -97,6 +100,14 @@
   "contributes": {
     "commands": [
       {
+        "command": "insertMomentString.insertSortable",
+        "title": "Insert Sortable DateTime"
+      },
+      {
+        "command": "insertMomentString.insertReadable",
+        "title": "Insert Readable DateTime"
+      },
+      {
         "command": "insertMomentString.insertDateTime",
         "title": "Insert DateTime"
       },
@@ -110,7 +121,11 @@
       },
       {
         "command": "insertMomentString.insertTimestamp",
-        "title": "Insert Timestamp"
+        "title": "Insert Timestamp String"
+      },
+      {
+        "command": "insertMomentString.insertTimestampNumeric",
+        "title": "Insert Timestamp Number"
       },
       {
         "command": "insertMomentString.insertOwnFormatDateTime",
@@ -118,12 +133,22 @@
       }
     ],
     "configuration": {
-      "title": "Insert Date String Configuration",
+      "title": "Insert Moment String Configuration",
       "properties": {
         "insertMomentString.format": {
           "type": "string",
-          "default": "YYYY-MM-DD hh:mm:ss",
-          "description": "Date time format to be used."
+          "default": "YYYY-MM-DDTHH:mm:ssZ",
+          "description": "Date time format to be used (default is ISO 8601, no fractional seconds)."
+        },
+        "insertMomentString.formatSort": {
+          "type": "string",
+          "default": "YYYYMMDDHHmmss.SSS",
+          "description": "Sortable date time format to be used."
+        },
+        "insertMomentString.formatReadable": {
+          "type": "string",
+          "default": "YYYY-MM-DD HH:mm:ss",
+          "description": "Easily human-readable date time format to be used."
         },
         "insertMomentString.formatDate": {
           "type": "string",
@@ -132,7 +157,7 @@
         },
         "insertMomentString.formatTime": {
           "type": "string",
-          "default": "hh:mm:ss",
+          "default": "HH:mm:ss",
           "description": "Time format to be used."
         }
       }
